@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Labirinth2019.Heroes;
 
@@ -8,6 +9,7 @@ namespace Labirinth2019.Lab
     public class Labirinth
     {
         public List<List<LabSell>> LabSells { get; set; }
+        public List<Coin> Coins { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Hero Hero { get; set; }
@@ -21,6 +23,7 @@ namespace Labirinth2019.Lab
                 LabSells[y][x] = value;
             }
         }
+        private Random _random = new Random();
 
         public Labirinth(int width, int height)
         {
@@ -30,52 +33,86 @@ namespace Labirinth2019.Lab
             for (int y = 0; y < height; y++) {
                 var row = new List<LabSell>();
                 for (int x = 0; x < width; x++) {
-                    row.Add(new LabSell(RandowWall(), x, y));
+                    //row.Add(new LabSell(RandowWall(), x, y));
+                    row.Add(new LabSell(FullWall(), x, y));
                 }
                 LabSells.Add(row);
             }
 
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    BrokeTheWall(x, y);
+                }
+            }
+
             Hero = new Hero(0, 0);
+
+            Coins = new List<Coin>();
+            for (int i = 0; i < 5; i++) {
+                var x = _random.Next(Width);
+                var y = _random.Next(Height);
+                Coins.Add(new Coin(x, y));
+            }
         }
 
         public bool HeroTryStep(Direction direction)
         {
             var cell = this[Hero.X, Hero.Y];
+            var isAvailableDirection = false;
             switch (direction) {
                 case Direction.Up: {
                         if (!cell.Wall.HasFlag(Wall.Up)) {
                             Hero.Y--;
-                            return true;
+                            isAvailableDirection = true;
                         }
-                        return false;
+                        break;
                     }
                 case Direction.Right: {
                         if (!cell.Wall.HasFlag(Wall.Right)) {
                             Hero.X++;
-                            return true;
+                            isAvailableDirection = true;
                         }
-                        return false;
+                        break;
                     }
                 case Direction.Down: {
                         if (!cell.Wall.HasFlag(Wall.Down)) {
                             Hero.Y++;
-                            return true;
+                            isAvailableDirection = true;
                         }
-                        return false;
+                        break;
                     }
                 case Direction.Left: {
                         if (!cell.Wall.HasFlag(Wall.Left)) {
                             Hero.X--;
-                            return true;
+                            isAvailableDirection = true;
                         }
-                        return false;
+                        break;
+                    }
+                default: {
+                        throw new Exception("New value of Direction enum");
                     }
             }
+            var cointsInCell = Coins.Where(coin => coin.X == Hero.X && coin.Y == Hero.Y).ToList();
+            Hero.Money += cointsInCell.Count();
+            cointsInCell.ForEach(x => Coins.Remove(x));
 
-            throw new Exception("New value of Direction enum");
+            return isAvailableDirection;
         }
 
-        private Random _rand = new Random();
+        private void BrokeTheWall(int x, int y)
+        {
+            var currentCell = this[x, y];
+            var randNumber = _random.Next(10);
+            if (randNumber > 3 && y < Height - 1) {
+                currentCell.Wall &= ~Wall.Down;
+                this[x, y + 1].Wall &= ~Wall.Up;
+            }
+            if ((randNumber % 2 == 0 || randNumber <= 3)
+                && x < Width - 1) {
+                currentCell.Wall &= ~Wall.Right;
+                this[x + 1, y].Wall &= ~Wall.Left;
+            }
+        }
 
         private Wall FullWall()
         {
@@ -85,7 +122,7 @@ namespace Labirinth2019.Lab
         private Wall RandowWall()
         {
             Wall wall = FullWall();
-            var randNumber = _rand.Next(10);
+            var randNumber = _random.Next(10);
             if (randNumber > 3) {
                 wall &= ~Wall.Down;
             }
