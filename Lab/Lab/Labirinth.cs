@@ -39,16 +39,17 @@ namespace Labirinth2019.Lab
                 LabSells.Add(row);
             }
 
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    BrokeTheWall(x, y);
-                }
-            }
+            //for (int y = 0; y < height; y++) {
+            //    for (int x = 0; x < width; x++) {
+            //        BrokeTheWall(x, y);
+            //    }
+            //}
 
             Hero = new Hero(0, 0);
 
             Coins = new List<Coin>();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 5; i++)
+            {
                 var x = _random.Next(Width);
                 var y = _random.Next(Height);
                 Coins.Add(new Coin(x, y));

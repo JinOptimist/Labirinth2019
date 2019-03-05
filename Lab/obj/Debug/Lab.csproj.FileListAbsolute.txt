@@ -1,0 +1,14 @@
+C:\Users\stud\source\repos\Lab\Lab\obj\Debug\Lab.csprojAssemblyReference.cache
+C:\Users\stud\source\repos\Lab\Lab\obj\Debug\Lab.csproj.CoreCompileInputs.cache
+C:\Users\stud\source\repos\Lab\Lab\bin\Debug\Lab.exe.config
+C:\Users\stud\source\repos\Lab\Lab\bin\Debug\Lab.exe
+C:\Users\stud\source\repos\Lab\Lab\bin\Debug\Lab.pdb
+C:\Users\stud\source\repos\Lab\Lab\obj\Debug\Lab.exe
+C:\Users\stud\source\repos\Lab\Lab\obj\Debug\Lab.pdb
+D:\+GitHub\Labirinth\Lab\bin\Debug\Lab.exe.config
+D:\+GitHub\Labirinth\Lab\bin\Debug\Lab.exe
+D:\+GitHub\Labirinth\Lab\bin\Debug\Lab.pdb
+D:\+GitHub\Labirinth\Lab\obj\Debug\Lab.csprojResolveAssemblyReference.cache
+D:\+GitHub\Labirinth\Lab\obj\Debug\Lab.csproj.CoreCompileInputs.cache
+D:\+GitHub\Labirinth\Lab\obj\Debug\Lab.exe
+D:\+GitHub\Labirinth\Lab\obj\Debug\Lab.pdb
