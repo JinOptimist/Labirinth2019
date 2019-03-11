@@ -1,4 +1,5 @@
 ﻿using GameLabirinth.Heroes;
+using GameLabirinth.Labirinth.CellObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,140 +11,135 @@ namespace GameLabirinth.Labirinth
 {
     public class LabirinthGenerator
     {
-        private LabirinthLevel lab;
-        private List<LabirinthCell> BlueCell;
-        private List<LabirinthCell> OrangeCell;
+        private int Width;
+        private int Height;
+        private int ChanseOfCoin;
+        private bool ShowLabGeneration;
+        private LabirinthLevel Lab;
+        private List<Wall> WallsToDemolish = new List<Wall>();
+        private List<Wall> FinishedWalls = new List<Wall>();
 
         private Random _rand = new Random();
 
-        public LabirinthGenerator(LabirinthLevel labirinth)
+        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false)
         {
-            lab = labirinth;
-            BlueCell = lab.LabCells
-                .SelectMany(row => row.Select(cell => cell)).ToList();
-            OrangeCell = new List<LabirinthCell>();
+            Width = width;
+            Height = height;
+            ChanseOfCoin = chanseOfCoin;
+            ShowLabGeneration = showLabGeneration;
         }
 
-        public void BrokeWallsInTheLabirinth()
+        public LabirinthLevel Generate(Hero hero = null)
         {
-            Step(lab[0, 0]);
-        }
-
-        private void Step(LabirinthCell yellowCell)
-        {
-            //Drawer.DrawLab(lab);
-            //Thread.Sleep(100);
-
-            var nearBlueCells = GetNearBlueCells(yellowCell);
-            if (nearBlueCells.Any())
-            {
-                var nextCell = GetRandomCell(nearBlueCells);
-                BrokeTheWall(yellowCell, nextCell);
-                BlueCell.Remove(nextCell);
-                OrangeCell.Add(nextCell);
-                Step(nextCell);
-                return;
+            if (hero == null) {
+                hero = new Hero(0, 0);
             }
 
-            var nearOrangeCells = GetNearOrangeCells(yellowCell);
-            if (nearOrangeCells.Any())
-            {
-                var nextCell = GetRandomCell(nearOrangeCells);
-                OrangeCell.Remove(nextCell);
-                Step(nextCell);
-                return;
-            }
-
-            if (OrangeCell.Any())
-            {
-                var nextCell = GetRandomCell(OrangeCell);
-                OrangeCell.Remove(nextCell);
-                Step(nextCell);
-                return;
-            }
-        }
-
-        private void BrokeTheWall(LabirinthCell cell1, LabirinthCell cell2)
-        {
-            if (cell1.X > cell2.X)
-            {
-                cell1.Wall &= ~Wall.Left;
-                cell2.Wall &= ~Wall.Right;
-            }
-            else if (cell1.X < cell2.X)
-            {
-                cell1.Wall &= ~Wall.Right;
-                cell2.Wall &= ~Wall.Left;
-            }
-            else
-            {
-                if (cell1.Y > cell2.Y)
-                {
-                    cell1.Wall &= ~Wall.Up;
-                    cell2.Wall &= ~Wall.Down;
+            Lab = new LabirinthLevel(Width, Height, hero);
+            for (int y = 0; y < Lab.Height; y++) {
+                var row = new List<BaseCellObject>();
+                for (int x = 0; x < Lab.Width; x++) {
+                    var wall = new Wall(x, y);
+                    row.Add(wall);
                 }
-                else
-                {
-                    cell1.Wall &= ~Wall.Down;
-                    cell2.Wall &= ~Wall.Up;
+                Lab.Cells.Add(row);
+            }
+
+            GeneratePathes();
+
+            GenerateCoins();
+
+            return Lab;
+        }
+
+        private void GeneratePathes()
+        {
+            BreakTheWall((Wall)Lab[0, 0]);
+            while (WallsToDemolish.Any()) {
+                if (ShowLabGeneration) {
+                    Drawer.DrawLab(Lab);
+                    Thread.Sleep(100);
+                }
+                
+
+                var wall = GetRandomWall(WallsToDemolish);
+                if (CanBreakTheWall(wall)) {
+                    BreakTheWall(wall);
+                } else {
+                    WallsToDemolish.Remove(wall);
                 }
             }
         }
 
-        private LabirinthCell GetRandomCell(List<LabirinthCell> cells)
+        private void GenerateCoins()
+        {
+            var grounds = Lab.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Ground
+                // coin at [0,0] coordinate it is bad. We want ignore start location
+                && (c.X != 0 || c.Y != 0))).ToList();
+            for (int i = 0; i < grounds.Count(); i++) {
+                var cell = grounds[i];
+                if (_rand.Next(100) > 100 - ChanseOfCoin) {
+                    Lab[cell.X, cell.Y] = new Coin(cell.X, cell.Y);
+                    if (ShowLabGeneration) {
+                        Drawer.DrawLab(Lab);
+                        Thread.Sleep(100);
+                    }
+                }
+            }
+        }
+
+        private void BreakTheWall(Wall wall)
+        {
+            var x = wall.X;
+            var y = wall.Y;
+            Lab[x, y] = new Ground(x, y);
+            WallsToDemolish.RemoveAll(w => w.X == x && w.Y == y);
+
+            var cell = Lab[x - 1, y] as Wall;
+            if (CanBreakTheWall(cell)) {
+                WallsToDemolish.Add(cell);
+            }
+            cell = Lab[x + 1, y] as Wall;
+            if (CanBreakTheWall(cell)) {
+                WallsToDemolish.Add(cell);
+            }
+            cell = Lab[x, y - 1] as Wall;
+            if (CanBreakTheWall(cell)) {
+                WallsToDemolish.Add(cell);
+            }
+            cell = Lab[x, y + 1] as Wall;
+            if (CanBreakTheWall(cell)) {
+                WallsToDemolish.Add(cell);
+            }
+        }
+
+        private bool CanBreakTheWall(Wall wall)
+        {
+            if (wall == null) {
+                return false;
+            }
+            if (GetNearCells(wall).Count(x => !(x is Wall)) > 1) {
+                return false;
+            }
+
+            return true;
+        }
+
+        private Wall GetRandomWall(List<Wall> cells)
         {
             var index = _rand.Next(cells.Count);
             return cells[index];
         }
 
-        private List<LabirinthCell> GetNearBlueCells(LabirinthCell yellowCell)
+        private List<BaseCellObject> GetNearCells(BaseCellObject cell)
         {
-            return BlueCell.Where(cell =>
-            (cell.X == yellowCell.X && cell.Y == yellowCell.Y + 1)
-                || (cell.X == yellowCell.X && cell.Y == yellowCell.Y - 1)
-                || (cell.X == yellowCell.X + 1 && cell.Y == yellowCell.Y)
-                || (cell.X == yellowCell.X - 1 && cell.Y == yellowCell.Y)
-            ).ToList();
+            var near = new List<BaseCellObject>();
+            near.Add(Lab[cell.X + 1, cell.Y]);
+            near.Add(Lab[cell.X - 1, cell.Y]);
+            near.Add(Lab[cell.X, cell.Y + 1]);
+            near.Add(Lab[cell.X, cell.Y - 1]);
+            return near.Where(x => x != null).ToList();
         }
 
-        private List<LabirinthCell> GetNearOrangeCells(LabirinthCell yellowCell)
-        {
-            var nearCells = OrangeCell.Where(cell =>
-            (cell.X == yellowCell.X && cell.Y == yellowCell.Y + 1)
-                || (cell.X == yellowCell.X && cell.Y == yellowCell.Y - 1)
-                || (cell.X == yellowCell.X + 1 && cell.Y == yellowCell.Y)
-                || (cell.X == yellowCell.X - 1 && cell.Y == yellowCell.Y)
-            ).ToList();
-
-            var result = new List<LabirinthCell>();
-
-            foreach (var nearCell in nearCells)
-            {
-                if (nearCell.X > yellowCell.X
-                    && !yellowCell.Wall.HasFlag(Wall.Right))
-                {
-                    result.Add(nearCell);
-                }
-                else if (nearCell.X < yellowCell.X
-                    && !yellowCell.Wall.HasFlag(Wall.Left))
-                {
-                    result.Add(nearCell);
-                }
-                else
-                {
-                    if (nearCell.Y < yellowCell.Y
-                        && !yellowCell.Wall.HasFlag(Wall.Up))
-                    {
-                        result.Add(nearCell);
-                    }
-                    else if(nearCell.Y > yellowCell.Y
-                        && !yellowCell.Wall.HasFlag(Wall.Down))
-                    {
-                        result.Add(nearCell);
-                    }
-                }
-            }
-            return result;
-        }
     }
 }

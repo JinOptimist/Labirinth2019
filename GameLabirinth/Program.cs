@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameLabirinth.Labirinth;
+using GameLabirinth.Labirinth.CellObject;
 
 namespace GameLabirinth
 {
@@ -12,9 +13,10 @@ namespace GameLabirinth
         static void Main(string[] args)
         {
             Console.WriteLine("Start");
-            var lab = new LabirinthLevel(10, 8);
-            var generator = new LabirinthGenerator(lab);
-            generator.BrokeWallsInTheLabirinth();
+            var showLabGeneration = true;
+            var hero = new Hero(0, 0);
+            var generator = new LabirinthGenerator(10, 5, showLabGeneration: showLabGeneration);
+            var lab = generator.Generate(hero);
 
             Drawer.DrawLab(lab);
 
@@ -23,19 +25,25 @@ namespace GameLabirinth
                 key = Console.ReadKey();
                 switch (key.Key) {
                     case ConsoleKey.LeftArrow: {
-                            lab.HeroTryStep(Heroes.Direction.Left);
+                            lab.HeroDoStep(Heroes.Direction.Left);
                             break;
                         }
                     case ConsoleKey.RightArrow: {
-                            lab.HeroTryStep(Heroes.Direction.Right);
+                            lab.HeroDoStep(Heroes.Direction.Right);
                             break;
                         }
                     case ConsoleKey.UpArrow: {
-                            lab.HeroTryStep(Heroes.Direction.Up);
+                            lab.HeroDoStep(Heroes.Direction.Up);
                             break;
                         }
                     case ConsoleKey.DownArrow: {
-                            lab.HeroTryStep(Heroes.Direction.Down);
+                            lab.HeroDoStep(Heroes.Direction.Down);
+                            break;
+                        }
+                    case ConsoleKey.R: {
+                            hero.X = 0;
+                            hero.Y = 0;
+                            lab = generator.Generate(hero);
                             break;
                         }
                 }

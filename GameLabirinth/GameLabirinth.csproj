@@ -44,12 +44,14 @@
   <ItemGroup>
     <Compile Include="Drawer.cs" />
     <Compile Include="Heroes\Direction.cs" />
-    <Compile Include="Heroes\Hero.cs" />
-    <Compile Include="Labirinth\Coin.cs" />
+    <Compile Include="Labirinth\CellObject\Hero.cs" />
+    <Compile Include="Labirinth\CellObject\BaseCellObject.cs" />
+    <Compile Include="Labirinth\CellObject\Ground.cs" />
+    <Compile Include="Labirinth\CellObject\Wall.cs" />
+    <Compile Include="Labirinth\CellObject\ICellObject.cs" />
+    <Compile Include="Labirinth\CellObject\Coin.cs" />
     <Compile Include="Labirinth\LabirinthGenerator.cs" />
     <Compile Include="Labirinth\LabirinthLevel.cs" />
-    <Compile Include="Labirinth\LabirinthCell.cs" />
-    <Compile Include="Labirinth\Wall.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

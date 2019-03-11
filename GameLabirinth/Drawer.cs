@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using GameLabirinth.Heroes;
 using GameLabirinth.Labirinth;
+using GameLabirinth.Labirinth.CellObject;
 
 namespace GameLabirinth
 {
@@ -11,43 +12,52 @@ namespace GameLabirinth
     {
         public static void DrawLab(LabirinthLevel labirinth)
         {
-            Console.Clear();
-            Console.WriteLine($"Money: {labirinth.Hero.Money}");
 
+            Console.Clear();
+            var hero = labirinth.Hero;
+            Console.WriteLine("Rule:");
+            Console.WriteLine("1) Use arrow to move");
+            Console.WriteLine("2) Press R to go for next level");
+            Console.WriteLine("3) Press Esc to Exit");
+            Console.Write($"Money: ");
+            var color = Console.ForegroundColor;
+            Console.ForegroundColor = Coin.CoinColor;
+            Console.WriteLine(hero.Money);
+            Console.ForegroundColor = color;
             Console.WriteLine();
-            for (int x = 0; x < labirinth.Width * 2 + 1; x++) {
-                Console.Write("_");
-            }
-            Console.WriteLine();
+
+            WriteWallLine(labirinth.Width + 2);
 
             for (int y = 0; y < labirinth.Height; y++) {
-                var row = new List<LabirinthCell>();
-                Console.Write("|");
+                Console.Write("#");
+                var row = new List<BaseCellObject>();
                 for (int x = 0; x < labirinth.Width; x++) {
-                    var cell = labirinth[x, y];
-
-                    if (labirinth.Hero.X == x
-                        && labirinth.Hero.Y == y) {
-                        Console.Write(Hero.Chapter);
-                    } else if (labirinth.Coins.Any(coin=>coin.X == x && coin.Y == y)) {
-                        Console.Write(Coin.Chapter);
+                    color = Console.ForegroundColor;
+                    if (hero.X == x && hero.Y == y) {
+                        Console.ForegroundColor = hero.Color;
+                        Console.Write(hero.Chapter);
                     } else {
-                        if (cell.Wall.HasFlag(Wall.Down)) {
-                            Console.Write("_");
-                        } else {
-                            Console.Write(" ");
-                        }
+                        var cell = labirinth[x, y];
+                        Console.ForegroundColor = cell.Color;
+                        Console.Write(cell.Chapter);
                     }
 
-                    if (cell.Wall.HasFlag(Wall.Right)) {
-                        Console.Write("|");
-                    } else {
-                        Console.Write(" ");
-                    }
+                    Console.ForegroundColor = color;
                 }
 
+                Console.Write("#");
                 Console.WriteLine();
             }
+
+            WriteWallLine(labirinth.Width + 2);
+        }
+
+        private static void WriteWallLine(int size)
+        {
+            for (var i = 0; i < size; i++) {
+                Console.Write("#");
+            }
+            Console.WriteLine();
         }
     }
 }

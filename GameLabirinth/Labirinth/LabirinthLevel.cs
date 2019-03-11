@@ -3,136 +3,77 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GameLabirinth.Heroes;
+using GameLabirinth.Labirinth.CellObject;
 
 namespace GameLabirinth.Labirinth
 {
     public class LabirinthLevel
     {
-        public List<List<LabirinthCell>> LabCells { get; set; }
-        public List<Coin> Coins { get; set; }
+        public List<List<BaseCellObject>> Cells { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Hero Hero { get; set; }
-        public LabirinthCell this[int x, int y] {
+        public BaseCellObject this[int x, int y] {
             get
             {
-                return LabCells[y][x];
+                if (x < 0 || y < 0
+                    || x > Width - 1 || y > Height - 1) {
+                    return null;
+                }
+
+                return Cells[y][x];
             }
             set
             {
-                LabCells[y][x] = value;
+                Cells[y][x] = value;
             }
         }
+
         private Random _random = new Random();
 
-        public LabirinthLevel(int width, int height)
+        public LabirinthLevel(int width, int height, Hero hero)
         {
-            LabCells = new List<List<LabirinthCell>>();
+            Cells = new List<List<BaseCellObject>>();
             Width = width;
             Height = height;
-            for (int y = 0; y < height; y++) {
-                var row = new List<LabirinthCell>();
-                for (int x = 0; x < width; x++) {
-                    //row.Add(new LabSell(RandowWall(), x, y));
-                    row.Add(new LabirinthCell(FullWall(), x, y));
-                }
-                LabCells.Add(row);
-            }
-
-            // Old way to generate random labirinth
-            //for (int y = 0; y < height; y++) {
-            //    for (int x = 0; x < width; x++) {
-            //        BrokeTheWall(x, y);
-            //    }
-            //}
-
-            Hero = new Hero(0, 0);
-
-            Coins = new List<Coin>();
-            for (int i = 0; i < 5; i++) {
-                var x = _random.Next(Width);
-                var y = _random.Next(Height);
-                Coins.Add(new Coin(x, y));
-            }
+            Hero = hero;
         }
 
-        public bool HeroTryStep(Direction direction)
+        public void HeroDoStep(Direction direction)
         {
-            var cell = this[Hero.X, Hero.Y];
-            var isAvailableDirection = false;
+            var x = Hero.X;
+            var y = Hero.Y;
+
+            BaseCellObject cellToStep;
             switch (direction) {
                 case Direction.Up: {
-                        if (!cell.Wall.HasFlag(Wall.Up)) {
-                            Hero.Y--;
-                            isAvailableDirection = true;
-                        }
+                        cellToStep = this[x, y - 1];
                         break;
                     }
                 case Direction.Right: {
-                        if (!cell.Wall.HasFlag(Wall.Right)) {
-                            Hero.X++;
-                            isAvailableDirection = true;
-                        }
+                        cellToStep = this[x + 1, y];
                         break;
                     }
                 case Direction.Down: {
-                        if (!cell.Wall.HasFlag(Wall.Down)) {
-                            Hero.Y++;
-                            isAvailableDirection = true;
-                        }
+                        cellToStep = this[x, y + 1];
                         break;
                     }
                 case Direction.Left: {
-                        if (!cell.Wall.HasFlag(Wall.Left)) {
-                            Hero.X--;
-                            isAvailableDirection = true;
-                        }
+                        cellToStep = this[x - 1, y];
                         break;
                     }
                 default: {
                         throw new Exception("New value of Direction enum");
                     }
             }
-            var cointsInCell = Coins.Where(coin => coin.X == Hero.X && coin.Y == Hero.Y).ToList();
-            Hero.Money += cointsInCell.Count();
-            cointsInCell.ForEach(x => Coins.Remove(x));
+            if (cellToStep?.TryToStepHere(Hero) ?? false) {
+                Hero.X = cellToStep.X;
+                Hero.Y = cellToStep.Y;
 
-            return isAvailableDirection;
-        }
-
-        private void BrokeTheWall(int x, int y)
-        {
-            var currentCell = this[x, y];
-            var randNumber = _random.Next(10);
-            if (randNumber > 3 && y < Height - 1) {
-                currentCell.Wall &= ~Wall.Down;
-                this[x, y + 1].Wall &= ~Wall.Up;
+                if (cellToStep is Coin) {
+                    this[cellToStep.X, cellToStep.Y] = new Ground(cellToStep.X, cellToStep.Y);
+                }
             }
-            if ((randNumber % 2 == 0 || randNumber <= 3)
-                && x < Width - 1) {
-                currentCell.Wall &= ~Wall.Right;
-                this[x + 1, y].Wall &= ~Wall.Left;
-            }
-        }
-
-        private Wall FullWall()
-        {
-            return Wall.Up | Wall.Right | Wall.Down | Wall.Left;
-        }
-
-        private Wall RandowWall()
-        {
-            Wall wall = FullWall();
-            var randNumber = _random.Next(10);
-            if (randNumber > 3) {
-                wall &= ~Wall.Down;
-            }
-            if (randNumber % 2 == 0
-                || randNumber <= 3) {
-                wall &= ~Wall.Right;
-            }
-
-            return wall;
         }
     }
 }
