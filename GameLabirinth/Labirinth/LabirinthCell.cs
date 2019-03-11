@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Labirinth2019.Lab
+namespace GameLabirinth.Labirinth
 {
-    public class LabSell
+    public class LabirinthCell
     {
-        public LabSell(Wall wall, int x, int y)
+        public LabirinthCell(Wall wall, int x, int y)
         {
             Wall = wall;
             X = x;

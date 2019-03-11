@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Labirinth2019.Lab;
-using Labirinth2019.Heroes;
 using System.Linq;
+using GameLabirinth.Heroes;
+using GameLabirinth.Labirinth;
 
-namespace Labirinth2019
+namespace GameLabirinth
 {
     public class Drawer
     {
-        public static void DrawLab(Labirinth labirinth)
+        public static void DrawLab(LabirinthLevel labirinth)
         {
             Console.Clear();
             Console.WriteLine($"Money: {labirinth.Hero.Money}");
@@ -21,7 +21,7 @@ namespace Labirinth2019
             Console.WriteLine();
 
             for (int y = 0; y < labirinth.Height; y++) {
-                var row = new List<LabSell>();
+                var row = new List<LabirinthCell>();
                 Console.Write("|");
                 for (int x = 0; x < labirinth.Width; x++) {
                     var cell = labirinth[x, y];

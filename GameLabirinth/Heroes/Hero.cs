@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Labirinth2019.Heroes
+namespace GameLabirinth.Heroes
 {
     public class Hero
     {

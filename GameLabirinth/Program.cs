@@ -1,14 +1,18 @@
 ﻿using System;
-using Labirinth2019.Lab;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using GameLabirinth.Labirinth;
 
-namespace Labirinth2019
+namespace GameLabirinth
 {
     class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Start");
-            var lab = new Labirinth(10, 8);
+            var lab = new LabirinthLevel(10, 8);
             Drawer.DrawLab(lab);
 
             ConsoleKeyInfo key;
@@ -19,7 +23,7 @@ namespace Labirinth2019
                             lab.HeroTryStep(Heroes.Direction.Left);
                             break;
                         }
-                    case ConsoleKey. RightArrow: {
+                    case ConsoleKey.RightArrow: {
                             lab.HeroTryStep(Heroes.Direction.Right);
                             break;
                         }

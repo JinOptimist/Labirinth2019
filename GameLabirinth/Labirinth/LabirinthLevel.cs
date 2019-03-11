@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Labirinth2019.Heroes;
+using GameLabirinth.Heroes;
 
-namespace Labirinth2019.Lab
+namespace GameLabirinth.Labirinth
 {
-    public class Labirinth
+    public class LabirinthLevel
     {
-        public List<List<LabSell>> LabSells { get; set; }
+        public List<List<LabirinthCell>> LabSells { get; set; }
         public List<Coin> Coins { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Hero Hero { get; set; }
-        public LabSell this[int x, int y] {
+        public LabirinthCell this[int x, int y] {
             get
             {
                 return LabSells[y][x];
@@ -25,16 +25,16 @@ namespace Labirinth2019.Lab
         }
         private Random _random = new Random();
 
-        public Labirinth(int width, int height)
+        public LabirinthLevel(int width, int height)
         {
-            LabSells = new List<List<LabSell>>();
+            LabSells = new List<List<LabirinthCell>>();
             Width = width;
             Height = height;
             for (int y = 0; y < height; y++) {
-                var row = new List<LabSell>();
+                var row = new List<LabirinthCell>();
                 for (int x = 0; x < width; x++) {
                     //row.Add(new LabSell(RandowWall(), x, y));
-                    row.Add(new LabSell(FullWall(), x, y));
+                    row.Add(new LabirinthCell(FullWall(), x, y));
                 }
                 LabSells.Add(row);
             }

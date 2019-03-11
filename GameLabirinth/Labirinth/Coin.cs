@@ -1,4 +1,4 @@
-﻿namespace Labirinth2019.Lab
+﻿namespace GameLabirinth.Labirinth
 {
     public class Coin
     {

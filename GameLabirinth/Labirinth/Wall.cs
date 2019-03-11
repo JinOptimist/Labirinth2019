@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Labirinth2019.Lab
+namespace GameLabirinth.Labirinth
 {
     [Flags]
     public enum Wall
