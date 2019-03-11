@@ -46,6 +46,7 @@
     <Compile Include="Heroes\Direction.cs" />
     <Compile Include="Heroes\Hero.cs" />
     <Compile Include="Labirinth\Coin.cs" />
+    <Compile Include="Labirinth\LabirinthGenerator.cs" />
     <Compile Include="Labirinth\LabirinthLevel.cs" />
     <Compile Include="Labirinth\LabirinthCell.cs" />
     <Compile Include="Labirinth\Wall.cs" />

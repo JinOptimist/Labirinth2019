@@ -8,7 +8,7 @@ namespace GameLabirinth.Labirinth
 {
     public class LabirinthLevel
     {
-        public List<List<LabirinthCell>> LabSells { get; set; }
+        public List<List<LabirinthCell>> LabCells { get; set; }
         public List<Coin> Coins { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -16,18 +16,18 @@ namespace GameLabirinth.Labirinth
         public LabirinthCell this[int x, int y] {
             get
             {
-                return LabSells[y][x];
+                return LabCells[y][x];
             }
             set
             {
-                LabSells[y][x] = value;
+                LabCells[y][x] = value;
             }
         }
         private Random _random = new Random();
 
         public LabirinthLevel(int width, int height)
         {
-            LabSells = new List<List<LabirinthCell>>();
+            LabCells = new List<List<LabirinthCell>>();
             Width = width;
             Height = height;
             for (int y = 0; y < height; y++) {
@@ -36,14 +36,15 @@ namespace GameLabirinth.Labirinth
                     //row.Add(new LabSell(RandowWall(), x, y));
                     row.Add(new LabirinthCell(FullWall(), x, y));
                 }
-                LabSells.Add(row);
+                LabCells.Add(row);
             }
 
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    BrokeTheWall(x, y);
-                }
-            }
+            // Old way to generate random labirinth
+            //for (int y = 0; y < height; y++) {
+            //    for (int x = 0; x < width; x++) {
+            //        BrokeTheWall(x, y);
+            //    }
+            //}
 
             Hero = new Hero(0, 0);
 

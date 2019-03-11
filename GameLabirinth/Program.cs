@@ -13,6 +13,9 @@ namespace GameLabirinth
         {
             Console.WriteLine("Start");
             var lab = new LabirinthLevel(10, 8);
+            var generator = new LabirinthGenerator(lab);
+            generator.BrokeWallsInTheLabirinth();
+
             Drawer.DrawLab(lab);
 
             ConsoleKeyInfo key;
