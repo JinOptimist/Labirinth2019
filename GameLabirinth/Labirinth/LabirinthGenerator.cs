@@ -15,7 +15,7 @@ namespace GameLabirinth.Labirinth
         private int Height;
         private int ChanseOfCoin;
         private bool ShowLabGeneration;
-        private LabirinthLevel Lab;
+        private LabirinthLevel LabLevel;
         private List<Wall> WallsToDemolish = new List<Wall>();
         private List<Wall> FinishedWalls = new List<Wall>();
 
@@ -29,59 +29,83 @@ namespace GameLabirinth.Labirinth
             ShowLabGeneration = showLabGeneration;
         }
 
-        public LabirinthLevel Generate(Hero hero = null)
+        /// <summary>
+        /// Generate labirinth level
+        /// </summary>
+        /// <param name="x">X Coordinate for stairs to up</param>
+        /// <param name="y">X Coordinate for stairs to up</param>
+        /// <returns></returns>
+        public LabirinthLevel GenerateLevel(int stairsX = 0, int stairsY = 0)
         {
-            if (hero == null) {
-                hero = new Hero(0, 0);
-            }
 
-            Lab = new LabirinthLevel(Width, Height, hero);
-            for (int y = 0; y < Lab.Height; y++) {
+            LabLevel = new LabirinthLevel(Width, Height);
+            for (int y = 0; y < LabLevel.Height; y++)
+            {
                 var row = new List<BaseCellObject>();
-                for (int x = 0; x < Lab.Width; x++) {
+                for (int x = 0; x < LabLevel.Width; x++)
+                {
                     var wall = new Wall(x, y);
                     row.Add(wall);
                 }
-                Lab.Cells.Add(row);
+                LabLevel.Cells.Add(row);
             }
 
-            GeneratePathes();
+            GeneratePathes(stairsX, stairsY);
 
-            GenerateCoins();
+            GenerateCoins(stairsX, stairsY);
 
-            return Lab;
+            var cell = GetRandom(
+                    LabLevel.AllCells()
+                    .OfType<Ground>()
+                    .Where(groundCell =>
+                        GetNearCells(groundCell)
+                        .Where(x => !(x is Wall))
+                        .Count() == 1).ToList()
+                );
+            LabLevel[cell.X, cell.Y] = new StairsDown(cell.X, cell.Y);
+
+            return LabLevel;
         }
 
-        private void GeneratePathes()
+        private void GeneratePathes(int stairsX, int stairsY)
         {
-            BreakTheWall((Wall)Lab[0, 0]);
-            while (WallsToDemolish.Any()) {
-                if (ShowLabGeneration) {
-                    Drawer.DrawLab(Lab);
+            BreakTheWall((Wall)LabLevel[stairsX, stairsY]);
+            while (WallsToDemolish.Any())
+            {
+                if (ShowLabGeneration)
+                {
+                    Drawer.DrawLabirinth(LabLevel);
                     Thread.Sleep(100);
                 }
-                
 
-                var wall = GetRandomWall(WallsToDemolish);
-                if (CanBreakTheWall(wall)) {
+                var wall = GetRandom(WallsToDemolish);
+                if (CanBreakTheWall(wall))
+                {
                     BreakTheWall(wall);
-                } else {
+                }
+                else
+                {
                     WallsToDemolish.Remove(wall);
                 }
             }
+
+            LabLevel[stairsX, stairsY] = new StairsUp(stairsX, stairsY);
         }
 
-        private void GenerateCoins()
+        private void GenerateCoins(int stairsX, int stairsY)
         {
-            var grounds = Lab.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Ground
-                // coin at [0,0] coordinate it is bad. We want ignore start location
-                && (c.X != 0 || c.Y != 0))).ToList();
-            for (int i = 0; i < grounds.Count(); i++) {
+            var grounds = LabLevel.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Ground
+                // coin at stairs coordinate it is bad. We want ignore start location
+                && (c.X != stairsX || c.Y != stairsY))).ToList();
+            for (int i = 0; i < grounds.Count(); i++)
+            {
                 var cell = grounds[i];
-                if (_rand.Next(100) > 100 - ChanseOfCoin) {
-                    Lab[cell.X, cell.Y] = new Coin(cell.X, cell.Y);
-                    if (ShowLabGeneration) {
-                        Drawer.DrawLab(Lab);
+                if (_rand.Next(100) > 100 - ChanseOfCoin)
+                {
+                    LabLevel[cell.X, cell.Y] = new Coin(cell.X, cell.Y);
+                    if (ShowLabGeneration)
+                    {
+                        Drawer.DrawLabirinth(LabLevel);
                         Thread.Sleep(100);
                     }
                 }
@@ -92,40 +116,46 @@ namespace GameLabirinth.Labirinth
         {
             var x = wall.X;
             var y = wall.Y;
-            Lab[x, y] = new Ground(x, y);
+            LabLevel[x, y] = new Ground(x, y);
             WallsToDemolish.RemoveAll(w => w.X == x && w.Y == y);
 
-            var cell = Lab[x - 1, y] as Wall;
-            if (CanBreakTheWall(cell)) {
+            var cell = LabLevel[x - 1, y] as Wall;
+            if (CanBreakTheWall(cell))
+            {
                 WallsToDemolish.Add(cell);
             }
-            cell = Lab[x + 1, y] as Wall;
-            if (CanBreakTheWall(cell)) {
+            cell = LabLevel[x + 1, y] as Wall;
+            if (CanBreakTheWall(cell))
+            {
                 WallsToDemolish.Add(cell);
             }
-            cell = Lab[x, y - 1] as Wall;
-            if (CanBreakTheWall(cell)) {
+            cell = LabLevel[x, y - 1] as Wall;
+            if (CanBreakTheWall(cell))
+            {
                 WallsToDemolish.Add(cell);
             }
-            cell = Lab[x, y + 1] as Wall;
-            if (CanBreakTheWall(cell)) {
+            cell = LabLevel[x, y + 1] as Wall;
+            if (CanBreakTheWall(cell))
+            {
                 WallsToDemolish.Add(cell);
             }
         }
 
         private bool CanBreakTheWall(Wall wall)
         {
-            if (wall == null) {
+            if (wall == null)
+            {
                 return false;
             }
-            if (GetNearCells(wall).Count(x => !(x is Wall)) > 1) {
+            if (GetNearCells(wall).Count(x => !(x is Wall)) > 1)
+            {
                 return false;
             }
 
             return true;
         }
 
-        private Wall GetRandomWall(List<Wall> cells)
+        private T GetRandom<T>(List<T> cells)
         {
             var index = _rand.Next(cells.Count);
             return cells[index];
@@ -134,12 +164,11 @@ namespace GameLabirinth.Labirinth
         private List<BaseCellObject> GetNearCells(BaseCellObject cell)
         {
             var near = new List<BaseCellObject>();
-            near.Add(Lab[cell.X + 1, cell.Y]);
-            near.Add(Lab[cell.X - 1, cell.Y]);
-            near.Add(Lab[cell.X, cell.Y + 1]);
-            near.Add(Lab[cell.X, cell.Y - 1]);
+            near.Add(LabLevel[cell.X + 1, cell.Y]);
+            near.Add(LabLevel[cell.X - 1, cell.Y]);
+            near.Add(LabLevel[cell.X, cell.Y + 1]);
+            near.Add(LabLevel[cell.X, cell.Y - 1]);
             return near.Where(x => x != null).ToList();
         }
-
     }
 }

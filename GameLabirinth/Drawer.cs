@@ -10,33 +10,46 @@ namespace GameLabirinth
 {
     public class Drawer
     {
-        public static void DrawLab(LabirinthLevel labirinth)
+        public static void DrawDungeon(Dungeon dungeon)
         {
-
             Console.Clear();
-            var hero = labirinth.Hero;
+            var hero = Hero.GetHero;
             Console.WriteLine("Rule:");
             Console.WriteLine("1) Use arrow to move");
             Console.WriteLine("2) Press R to go for next level");
             Console.WriteLine("3) Press Esc to Exit");
-            Console.Write($"Money: ");
+            Console.Write($"Level: {dungeon.CurrentLevelNumber}");
+            Console.Write($" Money: ");
             var color = Console.ForegroundColor;
             Console.ForegroundColor = Coin.CoinColor;
             Console.WriteLine(hero.Money);
             Console.ForegroundColor = color;
             Console.WriteLine();
 
+            DrawLabirinth(dungeon.CurrentLevel);
+        }
+
+        public static void DrawLabirinth(LabirinthLevel labirinth)
+        {
+            var color = Console.ForegroundColor;
+            var hero = Hero.GetHero;
+
             WriteWallLine(labirinth.Width + 2);
 
-            for (int y = 0; y < labirinth.Height; y++) {
+            for (int y = 0; y < labirinth.Height; y++)
+            {
                 Console.Write("#");
                 var row = new List<BaseCellObject>();
-                for (int x = 0; x < labirinth.Width; x++) {
+                for (int x = 0; x < labirinth.Width; x++)
+                {
                     color = Console.ForegroundColor;
-                    if (hero.X == x && hero.Y == y) {
+                    if (hero.X == x && hero.Y == y)
+                    {
                         Console.ForegroundColor = hero.Color;
                         Console.Write(hero.Chapter);
-                    } else {
+                    }
+                    else
+                    {
                         var cell = labirinth[x, y];
                         Console.ForegroundColor = cell.Color;
                         Console.Write(cell.Chapter);
@@ -52,9 +65,11 @@ namespace GameLabirinth
             WriteWallLine(labirinth.Width + 2);
         }
 
+
         private static void WriteWallLine(int size)
         {
-            for (var i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++)
+            {
                 Console.Write("#");
             }
             Console.WriteLine();
