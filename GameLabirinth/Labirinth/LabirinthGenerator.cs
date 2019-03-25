@@ -30,10 +30,10 @@ namespace GameLabirinth.Labirinth
         }
 
         /// <summary>
-        /// Generate labirinth level
+        /// Generate new labirinth level
         /// </summary>
-        /// <param name="x">X Coordinate for stairs to up</param>
-        /// <param name="y">X Coordinate for stairs to up</param>
+        /// <param name="stairsX">X Coordinate for stairs to up</param>
+        /// <param name="stairsY">Y Coordinate for stairs to up</param>
         /// <returns></returns>
         public LabirinthLevel GenerateLevel(int stairsX = 0, int stairsY = 0)
         {
@@ -74,7 +74,7 @@ namespace GameLabirinth.Labirinth
             {
                 if (ShowLabGeneration)
                 {
-                    Drawer.DrawLabirinth(LabLevel);
+                    Drawer.DrawLabirinth(LabLevel, true);
                     Thread.Sleep(100);
                 }
 
@@ -105,7 +105,7 @@ namespace GameLabirinth.Labirinth
                     LabLevel[cell.X, cell.Y] = new Coin(cell.X, cell.Y);
                     if (ShowLabGeneration)
                     {
-                        Drawer.DrawLabirinth(LabLevel);
+                        Drawer.DrawLabirinth(LabLevel, true);
                         Thread.Sleep(100);
                     }
                 }

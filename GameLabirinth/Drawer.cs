@@ -10,6 +10,10 @@ namespace GameLabirinth
 {
     public class Drawer
     {
+        /// <summary>
+        /// Draw rule, hero info and labirinth level
+        /// </summary>
+        /// <param name="dungeon">Pass dungeon that you want to draw</param>
         public static void DrawDungeon(Dungeon dungeon)
         {
             Console.Clear();
@@ -29,8 +33,17 @@ namespace GameLabirinth
             DrawLabirinth(dungeon.CurrentLevel);
         }
 
-        public static void DrawLabirinth(LabirinthLevel labirinth)
+        /// <summary>
+        /// Draw only labirint level
+        /// </summary>
+        /// <param name="labirinth"></param>
+        /// <param name="screenClear"></param>
+        public static void DrawLabirinth(LabirinthLevel labirinth, bool screenClear = false)
         {
+            if (screenClear) {
+                Console.Clear();
+            }
+
             var color = Console.ForegroundColor;
             var hero = Hero.GetHero;
 

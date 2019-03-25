@@ -24,6 +24,7 @@ namespace GameLabirinth.Labirinth
 
                 return Cells[y][x];
             }
+
             set
             {
                 Cells[y][x] = value;
