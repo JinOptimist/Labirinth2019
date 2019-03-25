@@ -13,8 +13,8 @@ namespace GameLabirinth
         static void Main(string[] args)
         {
             Console.WriteLine("Start");
-
-            var showLabGeneration = false;
+            
+            var showLabGeneration = args.Any();
             var dungeon = new Dungeon(showLabGeneration);
 
             Drawer.DrawDungeon(dungeon);
