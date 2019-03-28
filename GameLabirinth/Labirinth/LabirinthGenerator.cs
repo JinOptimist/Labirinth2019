@@ -21,7 +21,7 @@ namespace GameLabirinth.Labirinth
 
         private Random _rand = new Random();
 
-        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false)
+        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false, int levelNumber = 0)
         {
             Width = width;
             Height = height;
@@ -52,7 +52,9 @@ namespace GameLabirinth.Labirinth
 
             GeneratePathes(stairsX, stairsY);
 
-            GenerateCoins(stairsX, stairsY);
+            GenerateCoins();
+
+            GenerateGoldmine();
 
             var cell = GetRandom(
                     LabLevel.AllCells()
@@ -72,11 +74,7 @@ namespace GameLabirinth.Labirinth
             BreakTheWall((Wall)LabLevel[stairsX, stairsY]);
             while (WallsToDemolish.Any())
             {
-                if (ShowLabGeneration)
-                {
-                    Drawer.DrawLabirinth(LabLevel, true);
-                    Thread.Sleep(100);
-                }
+                RedrawLevel();
 
                 var wall = GetRandom(WallsToDemolish);
                 if (CanBreakTheWall(wall))
@@ -92,23 +90,40 @@ namespace GameLabirinth.Labirinth
             LabLevel[stairsX, stairsY] = new StairsUp(stairsX, stairsY);
         }
 
-        private void GenerateCoins(int stairsX, int stairsY)
+        private void GenerateCoins()
         {
-            var grounds = LabLevel.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Ground
-                // coin at stairs coordinate it is bad. We want ignore start location
-                && (c.X != stairsX || c.Y != stairsY))).ToList();
+            var grounds = LabLevel.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Ground)).ToList();
             for (int i = 0; i < grounds.Count(); i++)
             {
                 var cell = grounds[i];
                 if (_rand.Next(100) > 100 - ChanseOfCoin)
                 {
                     LabLevel[cell.X, cell.Y] = new Coin(cell.X, cell.Y);
-                    if (ShowLabGeneration)
-                    {
-                        Drawer.DrawLabirinth(LabLevel, true);
-                        Thread.Sleep(100);
-                    }
+                    RedrawLevel();
                 }
+            }
+        }
+
+        private void GenerateGoldmine()
+        {
+            var walls = LabLevel.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Wall)).ToList();
+            for (int i = 0; i < walls.Count(); i++)
+            {
+                var cell = walls[i];
+                if (_rand.Next(100) > 100 - (ChanseOfCoin / 2))
+                {
+                    LabLevel[cell.X, cell.Y] = new Goldmine(cell.X, cell.Y);
+                    RedrawLevel();
+                }
+            }
+        }
+
+        private void RedrawLevel()
+        {
+            if (ShowLabGeneration)
+            {
+                Drawer.DrawLabirinth(LabLevel, true);
+                Thread.Sleep(100);
             }
         }
 

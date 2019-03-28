@@ -3,7 +3,7 @@ using GameLabirinth.Heroes;
 
 namespace GameLabirinth.Labirinth.CellObject
 {
-    public abstract class BaseCellObject : ICellObject
+    public abstract class BaseCellObject //: ICellObject
     {
         public BaseCellObject() { }
 
@@ -19,6 +19,7 @@ namespace GameLabirinth.Labirinth.CellObject
         public int Y { get; set; }
         public char Chapter { get; set; }
         public ConsoleColor Color { get; set; }
+        public string DescAction { get; set; }
 
         public abstract bool TryToStepHere(Hero hero);
     }

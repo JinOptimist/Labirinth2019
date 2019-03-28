@@ -20,14 +20,14 @@ namespace GameLabirinth
             var hero = Hero.GetHero;
             Console.WriteLine("Rule:");
             Console.WriteLine("1) Use arrow to move");
-            Console.WriteLine("2) Press R to go for next level");
-            Console.WriteLine("3) Press Esc to Exit");
+            Console.WriteLine("2) Press Esc to Exit");
             Console.Write($"Level: {dungeon.CurrentLevelNumber}");
             Console.Write($" Money: ");
             var color = Console.ForegroundColor;
             Console.ForegroundColor = Coin.CoinColor;
             Console.WriteLine(hero.Money);
             Console.ForegroundColor = color;
+            Console.WriteLine(dungeon.DescLastAction);
             Console.WriteLine();
 
             DrawLabirinth(dungeon.CurrentLevel);
@@ -55,6 +55,13 @@ namespace GameLabirinth
                 var row = new List<BaseCellObject>();
                 for (int x = 0; x < labirinth.Width; x++)
                 {
+                    var cell = labirinth[x, y];
+                    if (!screenClear && !HeroCanSeeThis(cell))
+                    {
+                        Console.Write("~");
+                        continue;
+                    }
+
                     color = Console.ForegroundColor;
                     if (hero.X == x && hero.Y == y)
                     {
@@ -63,7 +70,6 @@ namespace GameLabirinth
                     }
                     else
                     {
-                        var cell = labirinth[x, y];
                         Console.ForegroundColor = cell.Color;
                         Console.Write(cell.Chapter);
                     }
@@ -78,6 +84,19 @@ namespace GameLabirinth
             WriteWallLine(labirinth.Width + 2);
         }
 
+        private static bool HeroCanSeeThis(BaseCellObject cellObject)
+        {
+            if (cellObject is StairsDown || cellObject is StairsUp)
+            {
+                return true;
+            }
+
+            var hero = Hero.GetHero;
+            var distance = Math.Sqrt(Math.Pow(hero.X - cellObject.X, 2) + Math.Pow(hero.Y - cellObject.Y, 2));
+
+            //return distance < 4;
+            return true;
+        }
 
         private static void WriteWallLine(int size)
         {

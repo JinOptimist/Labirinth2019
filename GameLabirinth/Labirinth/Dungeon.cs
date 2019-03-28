@@ -15,13 +15,15 @@ namespace GameLabirinth.Labirinth
 
         private List<LabirinthLevel> Levels { get; set; }
         private LabirinthGenerator Generator { get; set; }
-        private int width;
-        private int height;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
+        public string DescLastAction { get; set; }
 
         public Dungeon(bool showLabGeneration, int width = 10, int height = 5)
         {
-            this.width = width;
-            this.height = height;
+            Width = width;
+            Height = height;
             Generator = new LabirinthGenerator(width, height, showLabGeneration: showLabGeneration);
             Levels = new List<LabirinthLevel>();
             GoDown();
@@ -89,10 +91,10 @@ namespace GameLabirinth.Labirinth
                         throw new Exception("New value of Direction enum");
                     }
             }
-            ApplyAdditionalCellAction(cellToStep);
+            ApplyCellAction(cellToStep);
         }
 
-        private void ApplyAdditionalCellAction(BaseCellObject cellToStep)
+        private void ApplyCellAction(BaseCellObject cellToStep)
         {
             var hero = Hero.GetHero;
             if (cellToStep?.TryToStepHere(hero) ?? false)
@@ -102,7 +104,7 @@ namespace GameLabirinth.Labirinth
 
                 if (cellToStep is Coin)
                 {
-                    CurrentLevel[cellToStep.X, cellToStep.Y] = new Ground(cellToStep.X, cellToStep.Y);
+                    ReplaceToGround(cellToStep);
                 }
                 else if (cellToStep is StairsDown)
                 {
@@ -113,6 +115,22 @@ namespace GameLabirinth.Labirinth
                     GoUp();
                 }
             }
+
+            var goldmine = cellToStep as Goldmine;
+            if (goldmine != null)
+            {
+                if (goldmine.Money == 0)
+                {
+                    ReplaceToGround(goldmine);
+                }
+            }
+
+            DescLastAction = cellToStep.DescAction;
+        }
+
+        private void ReplaceToGround(BaseCellObject cellToStep)
+        {
+            CurrentLevel[cellToStep.X, cellToStep.Y] = new Ground(cellToStep.X, cellToStep.Y);
         }
     }
 }
