@@ -5,6 +5,7 @@ using System.Linq;
 using GameLabirinth.Heroes;
 using GameLabirinth.Labirinth;
 using GameLabirinth.Labirinth.CellObject;
+using GameLabirinth.Draw;
 
 namespace GameLabirinth
 {
@@ -16,21 +17,19 @@ namespace GameLabirinth
         /// <param name="dungeon">Pass dungeon that you want to draw</param>
         public static void DrawDungeon(Dungeon dungeon)
         {
+            var builder = new ConsoleStringBuilder();
             Console.Clear();
             var hero = Hero.GetHero;
-            Console.WriteLine("Rule:");
-            Console.WriteLine("1) Use arrow to move");
-            Console.WriteLine("2) Press Esc to Exit");
-            Console.Write($"Level: {dungeon.CurrentLevelNumber}");
-            Console.Write($" Money: ");
-            var color = Console.ForegroundColor;
-            Console.ForegroundColor = Coin.CoinColor;
-            Console.WriteLine(hero.Money);
-            Console.ForegroundColor = color;
-            Console.WriteLine(dungeon.DescLastAction);
-            Console.WriteLine();
+            builder.AppendLine("Rule:");
+            builder.AppendLine("1) Use arrow to move");
+            builder.AppendLine("2) Press Esc to Exit");
+            builder.Append($"Level: {dungeon.CurrentLevelNumber}");
+            builder.Append($" Money: ");
+            builder.AppendLine(hero.Money.ToString(), Coin.CoinColor);
+            builder.AppendLine(dungeon.DescLastAction);
+            builder.AppendLine();
 
-            DrawLabirinth(dungeon.CurrentLevel);
+            DrawLabirinth(dungeon.CurrentLevel, builder: builder);
         }
 
         /// <summary>
@@ -38,50 +37,51 @@ namespace GameLabirinth
         /// </summary>
         /// <param name="labirinth"></param>
         /// <param name="screenClear"></param>
-        public static void DrawLabirinth(LabirinthLevel labirinth, bool screenClear = false)
+        public static void DrawLabirinth(LabirinthLevel labirinth, bool screenClear = false, ConsoleStringBuilder builder = null)
         {
+            if (builder == null)
+            {
+                builder = new ConsoleStringBuilder();
+            }
+
             if (screenClear) {
                 Console.Clear();
             }
 
-            var color = Console.ForegroundColor;
             var hero = Hero.GetHero;
 
-            WriteWallLine(labirinth.Width + 2);
+            WriteWallLine(labirinth.Width + 2, builder);
 
             for (int y = 0; y < labirinth.Height; y++)
             {
-                Console.Write("#");
+                builder.Append("#");
                 var row = new List<BaseCellObject>();
                 for (int x = 0; x < labirinth.Width; x++)
                 {
                     var cell = labirinth[x, y];
                     if (!screenClear && !HeroCanSeeThis(cell))
                     {
-                        Console.Write("~");
+                        builder.Append("~");
                         continue;
                     }
 
-                    color = Console.ForegroundColor;
                     if (hero.X == x && hero.Y == y)
                     {
-                        Console.ForegroundColor = hero.Color;
-                        Console.Write(hero.Chapter);
+                        builder.Append(hero.Chapter, hero.Color);
                     }
                     else
                     {
-                        Console.ForegroundColor = cell.Color;
-                        Console.Write(cell.Chapter);
+                        builder.Append(cell.Chapter, cell.Color);
                     }
-
-                    Console.ForegroundColor = color;
                 }
 
-                Console.Write("#");
-                Console.WriteLine();
+                builder.Append("#");
+                builder.AppendLine();
             }
 
-            WriteWallLine(labirinth.Width + 2);
+            WriteWallLine(labirinth.Width + 2, builder);
+
+            builder.WriteToConsole();
         }
 
         private static bool HeroCanSeeThis(BaseCellObject cellObject)
@@ -98,13 +98,13 @@ namespace GameLabirinth
             return true;
         }
 
-        private static void WriteWallLine(int size)
+        private static void WriteWallLine(int size, ConsoleStringBuilder builder)
         {
             for (var i = 0; i < size; i++)
             {
-                Console.Write("#");
+                builder.Append("#");
             }
-            Console.WriteLine();
+            builder.AppendLine();
         }
     }
 }

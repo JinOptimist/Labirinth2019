@@ -37,6 +37,14 @@ namespace GameLabirinth.Labirinth
         /// <returns></returns>
         public LabirinthLevel GenerateLevel(int stairsX = 0, int stairsY = 0, int levelNumber = 0)
         {
+            if (levelNumber % 2 == 0)
+            {
+                Width++;
+            }
+            if (levelNumber % 3 == 0)
+            {
+                Height++;
+            }
 
             LabLevel = new LabirinthLevel(Width, Height);
             for (int y = 0; y < LabLevel.Height; y++)
