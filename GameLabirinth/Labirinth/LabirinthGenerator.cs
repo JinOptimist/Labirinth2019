@@ -13,7 +13,7 @@ namespace GameLabirinth.Labirinth
     {
         private int Width;
         private int Height;
-        private int ChanseOfCoin;
+        private int BaseChanseOfCoin;
         private bool ShowLabGeneration;
         private LabirinthLevel LabLevel;
         private List<Wall> WallsToDemolish = new List<Wall>();
@@ -21,11 +21,11 @@ namespace GameLabirinth.Labirinth
 
         private Random _rand = new Random();
 
-        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false, int levelNumber = 0)
+        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false)
         {
             Width = width;
             Height = height;
-            ChanseOfCoin = chanseOfCoin;
+            BaseChanseOfCoin = chanseOfCoin;
             ShowLabGeneration = showLabGeneration;
         }
 
@@ -35,7 +35,7 @@ namespace GameLabirinth.Labirinth
         /// <param name="stairsX">X Coordinate for stairs to up</param>
         /// <param name="stairsY">Y Coordinate for stairs to up</param>
         /// <returns></returns>
-        public LabirinthLevel GenerateLevel(int stairsX = 0, int stairsY = 0)
+        public LabirinthLevel GenerateLevel(int stairsX = 0, int stairsY = 0, int levelNumber = 0)
         {
 
             LabLevel = new LabirinthLevel(Width, Height);
@@ -52,19 +52,19 @@ namespace GameLabirinth.Labirinth
 
             GeneratePathes(stairsX, stairsY);
 
-            GenerateCoins();
+            GenerateCoins(levelNumber);
 
-            GenerateGoldmine();
+            GenerateGoldmine(levelNumber);
 
-            var cell = GetRandom(
+            var deadEnd = GetRandom(
                     LabLevel.AllCells()
-                    .OfType<Ground>()
+                    .Where(x => x is Ground || x is Coin)
                     .Where(groundCell =>
                         GetNearCells(groundCell)
                         .Where(x => !(x is Wall))
                         .Count() == 1).ToList()
                 );
-            LabLevel[cell.X, cell.Y] = new StairsDown(cell.X, cell.Y);
+            LabLevel[deadEnd.X, deadEnd.Y] = new StairsDown(deadEnd.X, deadEnd.Y);
 
             return LabLevel;
         }
@@ -90,13 +90,13 @@ namespace GameLabirinth.Labirinth
             LabLevel[stairsX, stairsY] = new StairsUp(stairsX, stairsY);
         }
 
-        private void GenerateCoins()
+        private void GenerateCoins(int levelNumber)
         {
             var grounds = LabLevel.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Ground)).ToList();
             for (int i = 0; i < grounds.Count(); i++)
             {
                 var cell = grounds[i];
-                if (_rand.Next(100) > 100 - ChanseOfCoin)
+                if (_rand.Next(100) > 100 - (BaseChanseOfCoin + levelNumber))
                 {
                     LabLevel[cell.X, cell.Y] = new Coin(cell.X, cell.Y);
                     RedrawLevel();
@@ -104,13 +104,13 @@ namespace GameLabirinth.Labirinth
             }
         }
 
-        private void GenerateGoldmine()
+        private void GenerateGoldmine(int levelNumber)
         {
             var walls = LabLevel.Cells.SelectMany(row => row.Select(c => c).Where(c => c is Wall)).ToList();
             for (int i = 0; i < walls.Count(); i++)
             {
                 var cell = walls[i];
-                if (_rand.Next(100) > 100 - (ChanseOfCoin / 2))
+                if (_rand.Next(100) > 100 - ((BaseChanseOfCoin + levelNumber) / 2))
                 {
                     LabLevel[cell.X, cell.Y] = new Goldmine(cell.X, cell.Y);
                     RedrawLevel();

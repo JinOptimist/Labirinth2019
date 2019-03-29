@@ -3,7 +3,7 @@ using GameLabirinth.Heroes;
 
 namespace GameLabirinth.Labirinth.CellObject
 {
-    public abstract class BaseCellObject //: ICellObject
+    public abstract class BaseCellObject
     {
         public BaseCellObject() { }
 

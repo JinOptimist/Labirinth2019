@@ -57,7 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Drawer.cs" />
+    <Compile Include="Draw\ConsoleStringBuilder.cs" />
+    <Compile Include="Draw\Drawer.cs" />
     <Compile Include="Heroes\Direction.cs" />
     <Compile Include="Labirinth\CellObject\StairsUp.cs" />
     <Compile Include="Labirinth\CellObject\StairsDown.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="Labirinth\CellObject\Ground.cs" />
     <Compile Include="Labirinth\CellObject\Goldmine.cs" />
     <Compile Include="Labirinth\CellObject\Wall.cs" />
-    <Compile Include="Labirinth\CellObject\ICellObject.cs" />
     <Compile Include="Labirinth\CellObject\Coin.cs" />
     <Compile Include="Labirinth\Dungeon.cs" />
     <Compile Include="Labirinth\LabirinthGenerator.cs" />

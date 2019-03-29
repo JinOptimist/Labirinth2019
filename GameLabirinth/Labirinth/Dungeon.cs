@@ -38,7 +38,7 @@ namespace GameLabirinth.Labirinth
             }
 
             var hero = Hero.GetHero;
-            CurrentLevel = Generator.GenerateLevel(hero.X, hero.Y);
+            CurrentLevel = Generator.GenerateLevel(hero.X, hero.Y, CurrentLevelNumber);
             Levels.Add(CurrentLevel);
             CurrentLevelNumber++;
         }
@@ -125,7 +125,7 @@ namespace GameLabirinth.Labirinth
                 }
             }
 
-            DescLastAction = cellToStep.DescAction;
+            DescLastAction = cellToStep?.DescAction;
         }
 
         private void ReplaceToGround(BaseCellObject cellToStep)
