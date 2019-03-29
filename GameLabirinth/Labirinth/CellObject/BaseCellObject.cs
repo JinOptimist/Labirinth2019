@@ -21,6 +21,6 @@ namespace GameLabirinth.Labirinth.CellObject
         public ConsoleColor Color { get; set; }
         public string DescAction { get; set; }
 
-        public abstract bool TryToStepHere(Hero hero);
+        public abstract bool TryToStepHere(Dungeon dungeon);
     }
 }

@@ -97,38 +97,16 @@ namespace GameLabirinth.Labirinth
         private void ApplyCellAction(BaseCellObject cellToStep)
         {
             var hero = Hero.GetHero;
-            if (cellToStep?.TryToStepHere(hero) ?? false)
+            if (cellToStep?.TryToStepHere(this) ?? false)
             {
                 hero.X = cellToStep.X;
                 hero.Y = cellToStep.Y;
-
-                if (cellToStep is Coin)
-                {
-                    ReplaceToGround(cellToStep);
-                }
-                else if (cellToStep is StairsDown)
-                {
-                    GoDown();
-                }
-                else if (cellToStep is StairsUp)
-                {
-                    GoUp();
-                }
-            }
-
-            var goldmine = cellToStep as Goldmine;
-            if (goldmine != null)
-            {
-                if (goldmine.Money == 0)
-                {
-                    ReplaceToGround(goldmine);
-                }
             }
 
             DescLastAction = cellToStep?.DescAction;
         }
 
-        private void ReplaceToGround(BaseCellObject cellToStep)
+        public void ReplaceToGround(BaseCellObject cellToStep)
         {
             CurrentLevel[cellToStep.X, cellToStep.Y] = new Ground(cellToStep.X, cellToStep.Y);
         }

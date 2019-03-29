@@ -94,8 +94,8 @@ namespace GameLabirinth
             var hero = Hero.GetHero;
             var distance = Math.Sqrt(Math.Pow(hero.X - cellObject.X, 2) + Math.Pow(hero.Y - cellObject.Y, 2));
 
-            //return distance < 4;
-            return true;
+            return distance < 4;
+            //return true;
         }
 
         private static void WriteWallLine(int size, ConsoleStringBuilder builder)

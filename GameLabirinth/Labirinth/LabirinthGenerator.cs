@@ -72,6 +72,11 @@ namespace GameLabirinth.Labirinth
                         .Where(x => !(x is Wall))
                         .Count() == 1).ToList()
                 );
+            if (deadEnd == null)
+            {
+                deadEnd = GetRandom(LabLevel.AllCells().Where(x => x is Ground || x is Coin).ToList());
+            }
+
             LabLevel[deadEnd.X, deadEnd.Y] = new StairsDown(deadEnd.X, deadEnd.Y);
 
             return LabLevel;
@@ -180,6 +185,11 @@ namespace GameLabirinth.Labirinth
 
         private T GetRandom<T>(List<T> cells)
         {
+            if (cells.Count == 0)
+            {
+                return default(T);
+            }
+
             var index = _rand.Next(cells.Count);
             return cells[index];
         }

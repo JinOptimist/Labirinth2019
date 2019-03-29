@@ -12,13 +12,7 @@ namespace GameLabirinth.Labirinth
         public List<List<BaseCellObject>> Cells { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public List<BaseCellObject> CellsInLine {
-            get
-            {
-                return Cells.SelectMany(row => row.Select(x => x)).ToList();
-            }
-        }
-
+        
         public BaseCellObject this[int x, int y] {
             get
             {

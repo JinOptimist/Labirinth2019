@@ -10,9 +10,10 @@ namespace GameLabirinth.Labirinth.CellObject
             DescAction = "Here! I found coin";
         }
 
-        public override bool TryToStepHere(Hero hero)
+        public override bool TryToStepHere(Dungeon dungeon)
         {
-            hero.Money++;
+            dungeon.ReplaceToGround(this);
+            Hero.GetHero.Money++;
             return true;
         }
     }

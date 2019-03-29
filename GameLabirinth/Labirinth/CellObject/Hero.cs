@@ -24,7 +24,7 @@ namespace GameLabirinth.Labirinth.CellObject
 
         private Hero(int x, int y) : base(x, y, '@') { }
 
-        public override bool TryToStepHere(Hero hero)
+        public override bool TryToStepHere(Dungeon dungeon)
         {
             return false;
         }

@@ -8,7 +8,7 @@ namespace GameLabirinth.Labirinth.CellObject
             DescAction = "Boom. Hey! There is wall here";
         }
 
-        public override bool TryToStepHere(Hero hero)
+        public override bool TryToStepHere(Dungeon dungeon)
         {
             return false;
         }

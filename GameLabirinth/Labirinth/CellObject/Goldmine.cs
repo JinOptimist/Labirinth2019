@@ -11,15 +11,17 @@ namespace GameLabirinth.Labirinth.CellObject
             DescAction = "Money, money, money...";
         }
 
-        public override bool TryToStepHere(Hero hero)
+        public override bool TryToStepHere(Dungeon dungeon)
         {
             if (Money > 0)
             {
-                hero.Money++;
+                Hero.GetHero.Money++;
                 Money--;
                 if (Money == 0)
                 {
+                    dungeon.ReplaceToGround(this);
                     DescAction = "This was last coin. This is sad";
+                    return true;
                 }
             }
 
