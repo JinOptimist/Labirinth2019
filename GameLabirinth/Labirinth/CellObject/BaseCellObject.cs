@@ -20,6 +20,7 @@ namespace GameLabirinth.Labirinth.CellObject
         public char Chapter { get; set; }
         public ConsoleColor Color { get; set; }
         public string DescAction { get; set; }
+        public Action CallAfterStep;
 
         public abstract bool TryToStepHere(Dungeon dungeon);
     }

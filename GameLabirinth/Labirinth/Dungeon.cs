@@ -103,6 +103,11 @@ namespace GameLabirinth.Labirinth
                 hero.Y = cellToStep.Y;
             }
 
+            if (cellToStep?.CallAfterStep != null)
+            {
+                cellToStep.CallAfterStep();
+            }
+
             DescLastAction = cellToStep?.DescAction;
         }
 

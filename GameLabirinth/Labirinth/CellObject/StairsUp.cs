@@ -10,7 +10,7 @@ namespace GameLabirinth.Labirinth.CellObject
 
         public override bool TryToStepHere(Dungeon dungeon)
         {
-            dungeon.GoUp();
+            CallAfterStep = dungeon.GoUp;
             return true;
         }
     }
