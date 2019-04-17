@@ -1,7 +1,7 @@
-﻿using GameLabirinth.Heroes;
+﻿using LabirinthCore.Heroes;
 using System;
 
-namespace GameLabirinth.Labirinth.CellObject
+namespace LabirinthCore.Labirinth.CellObject
 {
     public class Coin : BaseCellObject
     {

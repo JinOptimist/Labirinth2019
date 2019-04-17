@@ -1,6 +1,6 @@
-﻿using GameLabirinth.Heroes;
+﻿using LabirinthCore.Heroes;
 
-namespace GameLabirinth.Labirinth.CellObject
+namespace LabirinthCore.Labirinth.CellObject
 {
     public class Wall : BaseCellObject
     {

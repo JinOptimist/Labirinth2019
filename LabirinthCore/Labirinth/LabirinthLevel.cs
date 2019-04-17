@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GameLabirinth.Heroes;
-using GameLabirinth.Labirinth.CellObject;
+using LabirinthCore.Heroes;
+using LabirinthCore.Labirinth.CellObject;
 
-namespace GameLabirinth.Labirinth
+namespace LabirinthCore.Labirinth
 {
     public class LabirinthLevel
     {

@@ -1,5 +1,5 @@
-﻿using GameLabirinth.Heroes;
-using GameLabirinth.Labirinth.CellObject;
+﻿using LabirinthCore.Heroes;
+using LabirinthCore.Labirinth.CellObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GameLabirinth.Labirinth
+namespace LabirinthCore.Labirinth
 {
     public class LabirinthGenerator
     {
@@ -135,7 +135,7 @@ namespace GameLabirinth.Labirinth
         {
             if (ShowLabGeneration)
             {
-                Drawer.DrawLabirinth(LabLevel, true);
+                //Drawer.DrawLabirinth(LabLevel, true);
                 Thread.Sleep(100);
             }
         }

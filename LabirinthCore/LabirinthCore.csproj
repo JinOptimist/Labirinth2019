@@ -4,31 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DABE55BD-7491-444F-BFAD-97E6119BC09A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>GameLabirinth</RootNamespace>
-    <AssemblyName>GameLabirinth</AssemblyName>
+    <ProjectGuid>{43A70BDA-DF14-4E18-8A61-B12718FCBC70}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LabirinthCore</RootNamespace>
+    <AssemblyName>LabirinthCore</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -38,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -57,26 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Draw\ConsoleStringBuilder.cs" />
-    <Compile Include="Draw\Drawer.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Heroes\Direction.cs" />
+    <Compile Include="Labirinth\CellObject\BaseCellObject.cs" />
+    <Compile Include="Labirinth\CellObject\Coin.cs" />
+    <Compile Include="Labirinth\CellObject\Goldmine.cs" />
+    <Compile Include="Labirinth\CellObject\Ground.cs" />
+    <Compile Include="Labirinth\CellObject\Hero.cs" />
+    <Compile Include="Labirinth\CellObject\StairsDown.cs" />
+    <Compile Include="Labirinth\CellObject\StairsUp.cs" />
+    <Compile Include="Labirinth\CellObject\Wall.cs" />
+    <Compile Include="Labirinth\Dungeon.cs" />
+    <Compile Include="Labirinth\LabirinthGenerator.cs" />
+    <Compile Include="Labirinth\LabirinthLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LabirinthCore\LabirinthCore.csproj">
-      <Project>{43a70bda-df14-4e18-8a61-b12718fcbc70}</Project>
-      <Name>LabirinthCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

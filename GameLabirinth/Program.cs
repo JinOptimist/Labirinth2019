@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GameLabirinth.Labirinth;
-using GameLabirinth.Labirinth.CellObject;
+using LabirinthCore.Heroes;
+using LabirinthCore.Labirinth;
+using LabirinthCore.Labirinth.CellObject;
 
 namespace GameLabirinth
 {
@@ -24,19 +25,19 @@ namespace GameLabirinth
                 key = Console.ReadKey();
                 switch (key.Key) {
                     case ConsoleKey.LeftArrow: {
-                            dungeon.HeroDoStep(Heroes.Direction.Left);
+                            dungeon.HeroDoStep(Direction.Left);
                             break;
                         }
                     case ConsoleKey.RightArrow: {
-                            dungeon.HeroDoStep(Heroes.Direction.Right);
+                            dungeon.HeroDoStep(Direction.Right);
                             break;
                         }
                     case ConsoleKey.UpArrow: {
-                            dungeon.HeroDoStep(Heroes.Direction.Up);
+                            dungeon.HeroDoStep(Direction.Up);
                             break;
                         }
                     case ConsoleKey.DownArrow: {
-                            dungeon.HeroDoStep(Heroes.Direction.Down);
+                            dungeon.HeroDoStep(Direction.Down);
                             break;
                         }
                 }

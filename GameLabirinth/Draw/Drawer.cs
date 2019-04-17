@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using GameLabirinth.Heroes;
-using GameLabirinth.Labirinth;
-using GameLabirinth.Labirinth.CellObject;
+using LabirinthCore.Heroes;
+using LabirinthCore.Labirinth;
+using LabirinthCore.Labirinth.CellObject;
 using GameLabirinth.Draw;
 
 namespace GameLabirinth

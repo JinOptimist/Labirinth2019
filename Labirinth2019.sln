@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLabirinth", "GameLabirinth\GameLabirinth.csproj", "{DABE55BD-7491-444F-BFAD-97E6119BC09A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabirinthCore", "LabirinthCore\LabirinthCore.csproj", "{43A70BDA-DF14-4E18-8A61-B12718FCBC70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DABE55BD-7491-444F-BFAD-97E6119BC09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DABE55BD-7491-444F-BFAD-97E6119BC09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DABE55BD-7491-444F-BFAD-97E6119BC09A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43A70BDA-DF14-4E18-8A61-B12718FCBC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43A70BDA-DF14-4E18-8A61-B12718FCBC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43A70BDA-DF14-4E18-8A61-B12718FCBC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43A70BDA-DF14-4E18-8A61-B12718FCBC70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

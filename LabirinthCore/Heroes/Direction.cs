@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameLabirinth.Heroes
+namespace LabirinthCore.Heroes
 {
     [Flags]
     public enum Direction
