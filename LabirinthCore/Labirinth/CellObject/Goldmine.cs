@@ -11,7 +11,7 @@ namespace LabirinthCore.Labirinth.CellObject
             DescAction = "Money, money, money...";
         }
 
-        public override bool TryToStepHere(Dungeon dungeon)
+        public override bool TryToStepHere(IDungeon dungeon)
         {
             if (Money > 0)
             {

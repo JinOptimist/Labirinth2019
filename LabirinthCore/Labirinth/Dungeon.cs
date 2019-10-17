@@ -8,24 +8,34 @@ using System.Threading.Tasks;
 
 namespace LabirinthCore.Labirinth
 {
-    public class Dungeon
+    public class Dungeon : IDungeon
     {
         public LabirinthLevel CurrentLevel { get; private set; }
         public int CurrentLevelNumber { get; private set; } = -1;
 
-        private List<LabirinthLevel> Levels { get; set; }
-        private LabirinthGenerator Generator { get; set; }
+        private List<LabirinthLevel> Levels { get; set; } = new List<LabirinthLevel>();
+        private ILabirinthGenerator Generator { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
 
         public string DescLastAction { get; set; }
 
-        public Dungeon(bool showLabGeneration, int width = 10, int height = 5)
+        public Dungeon(ILabirinthGenerator labirinthGenerator, bool showLabGeneration = false, int width = 10, int height = 5)
+        {
+            Setup(labirinthGenerator, showLabGeneration, width, height);
+        }
+
+        public Dungeon(bool showLabGeneration = false, int width = 10, int height = 5)
+        {
+            var generator = new LabirinthGenerator(width, height, showLabGeneration: showLabGeneration);
+            Setup(generator, showLabGeneration, width, height);
+        }
+
+        public void Setup(ILabirinthGenerator labirinthGenerator, bool showLabGeneration = false, int width = 10, int height = 5)
         {
             Width = width;
             Height = height;
-            Generator = new LabirinthGenerator(width, height, showLabGeneration: showLabGeneration);
-            Levels = new List<LabirinthLevel>();
+            Generator = labirinthGenerator;
             GoDown();
         }
 

@@ -9,7 +9,7 @@ namespace LabirinthCore.Labirinth
 {
     public class LabirinthLevel
     {
-        public List<List<BaseCellObject>> Cells { get; set; }
+        public List<List<BaseCellObject>> Cells { get; set; } = new List<List<BaseCellObject>>();
         public int Width { get; private set; }
         public int Height { get; private set; }
         
@@ -38,9 +38,13 @@ namespace LabirinthCore.Labirinth
 
         private Random _random = new Random();
 
+        public LabirinthLevel()
+        {
+
+        }
+
         public LabirinthLevel(int width, int height)
         {
-            Cells = new List<List<BaseCellObject>>();
             Width = width;
             Height = height;
         }

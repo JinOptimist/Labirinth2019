@@ -22,6 +22,6 @@ namespace LabirinthCore.Labirinth.CellObject
         public string DescAction { get; set; }
         public Action CallAfterStep;
 
-        public abstract bool TryToStepHere(Dungeon dungeon);
+        public abstract bool TryToStepHere(IDungeon dungeon);
     }
 }

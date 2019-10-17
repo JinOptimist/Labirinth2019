@@ -6,7 +6,7 @@ namespace LabirinthCore.Labirinth.CellObject
     {
         public Ground(int x, int y) : base(x, y, ' ') { }
 
-        public override bool TryToStepHere(Dungeon dungeon)
+        public override bool TryToStepHere(IDungeon dungeon)
         {
             return true;
         }

@@ -8,7 +8,7 @@ namespace LabirinthCore.Labirinth.CellObject
             DescAction = "I return one level up";
         }
 
-        public override bool TryToStepHere(Dungeon dungeon)
+        public override bool TryToStepHere(IDungeon dungeon)
         {
             CallAfterStep = dungeon.GoUp;
             return true;

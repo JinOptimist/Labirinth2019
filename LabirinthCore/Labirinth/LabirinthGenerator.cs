@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LabirinthCore.Labirinth
 {
-    public class LabirinthGenerator
+    public class LabirinthGenerator : ILabirinthGenerator
     {
         private int Width;
         private int Height;
