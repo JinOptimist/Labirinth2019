@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Heroes\Direction.cs" />
+    <Compile Include="Labirinth\Direction.cs" />
+    <Compile Include="LabGeneration\ILabirinthGenerator.cs" />
+    <Compile Include="LabGeneration\LabirinthGenerator.cs" />
     <Compile Include="Labirinth\CellObject\BaseCellObject.cs" />
     <Compile Include="Labirinth\CellObject\Coin.cs" />
     <Compile Include="Labirinth\CellObject\Goldmine.cs" />
@@ -52,8 +54,6 @@
     <Compile Include="Labirinth\CellObject\Wall.cs" />
     <Compile Include="Labirinth\Dungeon.cs" />
     <Compile Include="Labirinth\IDungeon.cs" />
-    <Compile Include="Labirinth\ILabirinthGenerator.cs" />
-    <Compile Include="Labirinth\LabirinthGenerator.cs" />
     <Compile Include="Labirinth\LabirinthLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
