@@ -27,8 +27,14 @@ namespace LabirinthCore.Labirinth
 
         public Dungeon(bool showLabGeneration = false, int width = 10, int height = 5)
         {
-            var generator = new LabirinthGenerator(width, height, showLabGeneration: showLabGeneration);
+            var generator = new LabirinthGenerator(width, height, showLabGeneration: showLabGeneration, seed: 42);
             Setup(generator, showLabGeneration, width, height);
+        }
+
+        public Dungeon(int width = 10, int height = 5)
+        {
+            var generator = new LabirinthGenerator(width, height, showLabGeneration: false, seed: 42);
+            Setup(generator, false, width, height);
         }
 
         public void Setup(ILabirinthGenerator labirinthGenerator, bool showLabGeneration = false, int width = 10, int height = 5)

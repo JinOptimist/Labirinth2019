@@ -21,12 +21,13 @@ namespace LabirinthCore.Labirinth
 
         private Random _rand = new Random();
 
-        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false)
+        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false, int? seed = null)
         {
             Width = width;
             Height = height;
             BaseChanseOfCoin = chanseOfCoin;
             ShowLabGeneration = showLabGeneration;
+            _rand = new Random(seed ?? DateTime.Now.Millisecond);
         }
 
         /// <summary>

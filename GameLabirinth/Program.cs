@@ -16,7 +16,7 @@ namespace GameLabirinth
             Console.WriteLine("Start");
             
             var showLabGeneration = args.Any();
-            var dungeon = new Dungeon(showLabGeneration, 8, 5);
+            var dungeon = new Dungeon(showLabGeneration, 20, 20);
 
             Drawer.DrawDungeon(dungeon);
 

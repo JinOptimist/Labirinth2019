@@ -1,0 +1,103 @@
+﻿@using LabirinthCore.Labirinth
+@using LabirinthCore.Labirinth.CellObject
+
+@model LabirinthLevel
+
+@{
+    ViewData["Title"] = "Лабиринт";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="level">
+    <div class="lab-row">
+        @for (int i = 0; i < Model.Width + 2; i++)
+        {
+            <div class="wall">
+                <img src="~/images/wall.png" />
+            </div>
+        }
+    </div>
+    @for (int y = 0; y < Model.Height; y++)
+    {
+        <div class="lab-row">
+            <div class="wall">
+                <img src="~/images/wall.png" />
+            </div>
+            @for (int x = 0; x < Model.Width; x++)
+            {
+                if (x == 0 && y == 0)
+                {
+                    <div class="hero">
+                        <img src="~/images/superhero.png" />
+                    </div>
+                }
+                else
+                {
+                    var cell = Model[x, y];
+                    if (cell is Wall)
+                    {
+                        <div class="wall">
+                            <img src="~/images/wall.png" />
+                        </div>
+                    }
+                    else if (cell is Goldmine)
+                    {
+                        <div class="goldmine">
+                            <img src="~/images/goldmine.png" />
+                        </div>
+                    }
+                    else if (cell is Ground)
+                    {
+                        <div class="ground"></div>
+                    }
+                    else if (cell is Coin)
+                    {
+                        <div class="coin">
+                            <img src="~/images/coin.png" />
+                        </div>
+                    }
+                    else if (cell is StairsDown)
+                    {
+                        <div class="stairs">
+                            <img src="~/images/stairs.png" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="error"></div>
+                    }
+                }
+            }
+            <div class="wall">
+                <img src="~/images/wall.png" />
+            </div>
+        </div>
+    }
+
+    <div class="lab-row">
+        @for (int i = 0; i < Model.Width + 2; i++)
+        {
+            <div class="wall">
+                <img src="~/images/wall.png" />
+            </div>
+        }
+    </div>
+</div>
+
+@*WriteWallLine(labirinth.Width + 2, builder);
+
+            for (int y = 0; y < Model.Height; y++)
+            {
+                builder.Append("#");
+                var lab-row = new List<BaseCellObject>();
+    for (int x = 0; x < Model.Width; x++)
+    {
+    var cell = Model[x, y];
+    builder.Append(cell.Chapter, cell.Color);
+
+    builder.Append("#");
+    builder.AppendLine();
+    }
+
+    WriteWallLine(Model.Width + 2, builder);*@
