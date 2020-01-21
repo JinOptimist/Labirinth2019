@@ -59,11 +59,11 @@ namespace GameLabirinth
                 for (int x = 0; x < labirinth.Width; x++)
                 {
                     var cell = labirinth[x, y];
-                    //if (!screenClear && !HeroCanSeeThis(cell))
-                    //{
-                    //    builder.Append("~");
-                    //    continue;
-                    //}
+                    if (!screenClear && !HeroCanSeeThis(cell))
+                    {
+                        builder.Append("~");
+                        continue;
+                    }
 
                     if (hero.X == x && hero.Y == y)
                     {
@@ -94,8 +94,8 @@ namespace GameLabirinth
             var hero = Hero.GetHero;
             var distance = Math.Sqrt(Math.Pow(hero.X - cellObject.X, 2) + Math.Pow(hero.Y - cellObject.Y, 2));
 
-            return distance < 4;
-            //return true;
+            //return distance < 4;
+            return true;
         }
 
         private static void WriteWallLine(int size, ConsoleStringBuilder builder)

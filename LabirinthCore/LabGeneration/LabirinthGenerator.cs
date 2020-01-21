@@ -14,19 +14,19 @@ namespace LabirinthCore.Labirinth
         private int Width;
         private int Height;
         private int BaseChanseOfCoin;
-        private bool ShowLabGeneration;
+        private Action<LabirinthLevel> AfterEachLabGenerationStep;
         private LabirinthLevel LabLevel;
         private List<Wall> WallsToDemolish = new List<Wall>();
         private List<Wall> FinishedWalls = new List<Wall>();
 
         private Random _rand = new Random();
 
-        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, bool showLabGeneration = false, int? seed = null)
+        public LabirinthGenerator(int width, int height, int chanseOfCoin = 20, Action<LabirinthLevel> afterEachLabGenerationStep = null, int? seed = null)
         {
             Width = width;
             Height = height;
             BaseChanseOfCoin = chanseOfCoin;
-            ShowLabGeneration = showLabGeneration;
+            AfterEachLabGenerationStep = afterEachLabGenerationStep;
             _rand = new Random(seed ?? DateTime.Now.Millisecond);
         }
 
@@ -134,9 +134,9 @@ namespace LabirinthCore.Labirinth
 
         private void RedrawLevel()
         {
-            if (ShowLabGeneration)
+            if (AfterEachLabGenerationStep != null)
             {
-                //Drawer.DrawLabirinth(LabLevel, true);
+                AfterEachLabGenerationStep(LabLevel);
                 Thread.Sleep(100);
             }
         }

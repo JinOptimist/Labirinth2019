@@ -20,24 +20,24 @@ namespace LabirinthCore.Labirinth
 
         public string DescLastAction { get; set; }
 
-        public Dungeon(ILabirinthGenerator labirinthGenerator, bool showLabGeneration = false, int width = 10, int height = 5)
+        public Dungeon(ILabirinthGenerator labirinthGenerator, int width = 10, int height = 5)
         {
-            Setup(labirinthGenerator, showLabGeneration, width, height);
+            Setup(labirinthGenerator, width, height);
         }
 
-        public Dungeon(bool showLabGeneration = false, int width = 10, int height = 5)
+        public Dungeon(int width = 10, int height = 5, Action<LabirinthLevel> afterEachLabGenerationStep = null)
         {
-            var generator = new LabirinthGenerator(width, height, showLabGeneration: showLabGeneration, seed: 42);
-            Setup(generator, showLabGeneration, width, height);
+            var generator = new LabirinthGenerator(width, height, afterEachLabGenerationStep: afterEachLabGenerationStep, seed: 42);
+            Setup(generator, width, height);
         }
 
         public Dungeon(int width = 10, int height = 5)
         {
-            var generator = new LabirinthGenerator(width, height, showLabGeneration: false, seed: 42);
-            Setup(generator, false, width, height);
+            var generator = new LabirinthGenerator(width, height, seed: 42);
+            Setup(generator, width, height);
         }
 
-        public void Setup(ILabirinthGenerator labirinthGenerator, bool showLabGeneration = false, int width = 10, int height = 5)
+        public void Setup(ILabirinthGenerator labirinthGenerator, int width = 10, int height = 5)
         {
             Width = width;
             Height = height;

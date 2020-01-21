@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Draw\ConsoleStringBuilder.cs" />
     <Compile Include="Draw\Drawer.cs" />
+    <Compile Include="DungeonConsoleManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
